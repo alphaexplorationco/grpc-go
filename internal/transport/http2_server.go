@@ -1221,6 +1221,10 @@ func (t *http2Server) Close() {
 		connEnd := &stats.ConnEnd{}
 		t.stats.HandleConn(t.ctx, connEnd)
 	}
+	// release framer
+	t.framer.writer = nil
+	t.framer.fr = nil
+	t.framer = nil
 }
 
 // deleteStream deletes the stream s from transport's active streams.
