@@ -24,6 +24,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"math"
 	"net"
 	"net/http"
@@ -260,6 +261,7 @@ func NewServerTransport(conn net.Conn, config *ServerConfig) (_ ServerTransport,
 		czData:            new(channelzData),
 		bufferPool:        newBufferPool(),
 	}
+	log.Printf("new http2server:%p", t)
 	t.controlBuf = newControlBuffer(t.done)
 	if dynamicWindow {
 		t.bdpEst = &bdpEstimator{
@@ -1222,6 +1224,7 @@ func (t *http2Server) Close() {
 		t.stats.HandleConn(t.ctx, connEnd)
 	}
 	// release framer
+	log.Printf("close http2server:%p", t)
 	t.framer.writer = nil
 	t.framer.fr = nil
 	t.framer = nil
